@@ -1,0 +1,51 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Setup C/C++ make env
+      - name: setup build env
+        run: |
+          apt update
+          apt install clang make cmake gcc
+          
+      # Runs a set of commands using the runners shell
+      - name: download coreutils & prepare
+        run: |
+            wget http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
+            tar xvJf coreutils-8.32.tar.xz
+            cp advcpmv-0.8-8.32.patch coreutils-8.32/
+      # Build
+      - name: configure and build
+        run: |
+          patch -p1 -i advcpmv-0.8-8.32.patch
+          ./configure
+          make
+          
+      # Upload
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          path: 'src/'

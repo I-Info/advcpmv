@@ -28,8 +28,8 @@ jobs:
       # Setup C/C++ make env
       - name: setup build env
         run: |
-          apt update
-          apt install clang make cmake gcc
+          sudo apt update
+          sudo apt install clang make cmake gcc
           
       # Runs a set of commands using the runners shell
       - name: download coreutils & prepare

@@ -44,9 +44,12 @@ jobs:
           patch -p1 -i advcpmv-0.8-8.32.patch
           ./configure
           make
+          mkdir target
+          cp src/cp target/cpg
+          cp src/mv target/mvg
           
       # Upload
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          path: 'coreutils-8.32/src/'
+          path: 'coreutils-8.32/target/'

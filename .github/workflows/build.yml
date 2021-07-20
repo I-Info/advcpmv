@@ -22,21 +22,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
 
       # Setup C/C++ make env
       - name: setup build env
         run: |
-          sudo apt update
-          sudo apt install clang make cmake gcc
+          sudo apt-get update
+          sudo apt-get install clang make cmake gcc
           
       # Runs a set of commands using the runners shell
       - name: download coreutils & prepare
         run: |
-            wget http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
-            tar xvJf coreutils-8.32.tar.xz
-            cp advcpmv-0.8-8.32.patch coreutils-8.32/
+          wget http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
+          tar xvJf coreutils-8.32.tar.xz
+          cd coreutils-8.32/
+          wget https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-0.8-8.32.patch
+
       # Build
       - name: configure and build
         run: |

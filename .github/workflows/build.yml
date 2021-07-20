@@ -40,6 +40,7 @@ jobs:
       # Build
       - name: configure and build
         run: |
+          cd coreutils-8.32/
           patch -p1 -i advcpmv-0.8-8.32.patch
           ./configure
           make
@@ -48,4 +49,4 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          path: 'src/'
+          path: 'coreutils-8.32/src/'

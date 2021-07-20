@@ -48,8 +48,24 @@ jobs:
           cp src/cp target/cpg
           cp src/mv target/mvg
           
-      # Upload
+      # Upload artifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
           path: 'coreutils-8.32/target/'
+      
+      - name: publish release
+        uses: marvinpinto/action-automatic-releases@v1.2.0
+        if: ${{github.event_name == 'push'}}
+        with:
+          # GitHub secret token
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          # Git tag (for automatic releases)
+          automatic_release_tag: 'latest'
+          # Should this release be marked as a pre-release?
+          prerelease: true
+          # Release title (for automatic releases)
+          title: "build release"
+          # Assets to upload to the release
+          files: |
+            coreutils-8.32/target/*

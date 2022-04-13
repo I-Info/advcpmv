@@ -1,3 +1,5 @@
+![advcpmv](https://web.archive.org/web/20131217004029im_/http://beatex.org/web/advcopy/advcpmv-screen-20130313.png)
+
 ## Advanced Copy ##
 
 Advanced Copy is a mod for the GNU cp and GNU mv tools which adds a progress bar and provides some info on what's going on. It was written by Florian Zwicke and released under the GPL.
@@ -8,36 +10,38 @@ advcpmv-0.5-8.21.patch was the last patch released by the author (on February 14
 
 ## Build instructions
 
-The latest GNU Core Utilities source can be found here: https://ftp.gnu.org/gnu/coreutils/
+Run the following command to download, patch, compile coreutils and generate the files: `./advcpmv/advcp` and `./advcpmv/advmv`.
 
 ```
-wget http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
-tar xvJf coreutils-8.32.tar.xz
-cd coreutils-8.32/
-wget https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-0.8-8.32.patch
-patch -p1 -i advcpmv-0.8-8.32.patch
-./configure
-make
+curl https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh --create-dirs -o ./advcpmv/install.sh && (cd advcpmv && sh install.sh)
+```
+
+To install an older version than the latest one, you can specify the version by passing it as an argument to the install script (at the end of the command, before the closing parenthesis). For example, if you want to install `advcpmv-0.8-8.32.patch` you would modify the command above like so.
+
+```
+... && (cd advcpmv && sh install.sh 0.8 8.32)
 ```
 
 ## Usage
 
 ### Change your behaviour
 
-You can install the binaries and use `cpg -g` and `mvg -g` instead of cp and mv
+You can install the binaries and use `cpg -g` and `mvg -g` instead of cp and mv:
 
 ```
-sudo mv ./src/cp /usr/local/bin/cpg
-sudo mv ./src/mv /usr/local/bin/mvg
+sudo mv ./advcpmv/advcp /usr/local/bin/cpg
+sudo mv ./advcpmv/advmv /usr/local/bin/mvg
 ```
+
+Progress bar does not work with reflink (introduced v9.0 onwards). So reflink is disabled if using progress bar, left unchanged otherwise.
 
 ### Alias
 
 You can install the binaries and create aliases for bash (or whatever you use)
 
 ```
-sudo mv ./src/cp /usr/local/bin/advcp
-sudo mv ./src/mv /usr/local/bin/advmv
+sudo mv ./advcpmv/advcp /usr/local/bin/
+sudo mv ./advcpmv/advmv /usr/local/bin/
 echo alias cp '/usr/local/bin/advcp -g' >> ~/.bashrc
 echo alias mv '/usr/local/bin/advmv -g' >> ~/.bashrc
 ```
